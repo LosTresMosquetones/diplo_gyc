@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { createProduct, getProducts, getHealth } from '../services/api';
+
+import { createProduct, getHealth, getProducts } from '../services/api';
 
 vi.mock('axios');
 
@@ -22,10 +23,11 @@ describe('api service', () => {
   });
 
   it('calls GET /health', async () => {
-    axios.get.mockResolvedValue({ data: { status: 'OK' } });
+    axios.get.mockResolvedValue({ data: { status: 'ok', app: 'bff' } });
 
-    await getHealth();
+    const result = await getHealth();
 
     expect(axios.get).toHaveBeenCalledWith('http://localhost:3000/health');
+    expect(result).toEqual({ status: 'ok', app: 'bff' });
   });
 });
