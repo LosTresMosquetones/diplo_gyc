@@ -91,6 +91,14 @@ jobs:
           docker compose pull
           docker compose -p staging up -d
 
+      - name: Notify Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{
+              \"content\": \"🚀 Staging deploy status: ${{ job.status }}\nRepository: ${{ github.repository }}\nCommit: ${{ github.sha }}\nActor: ${{ github.actor }}\"
+            }" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
   despliegue-produccion:
     name: Despliegue a Producción
     needs: despliegue-staging
@@ -109,3 +117,11 @@ jobs:
           echo "Levantando Producción..."
           docker compose pull
           docker compose -p prod up -d
+
+      - name: Notify Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{
+              \"content\": \"🚀 Production deploy status: ${{ job.status }}\nRepository: ${{ github.repository }}\nCommit: ${{ github.sha }}\nActor: ${{ github.actor }}\"
+            }" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
