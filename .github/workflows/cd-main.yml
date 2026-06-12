@@ -44,6 +44,9 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v4
 
+      - name: Set lowercase image name
+        run: echo "IMAGE_NAME_LC=$(echo '${{ env.IMAGE_NAME }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Login en GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -56,21 +59,21 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:${{ github.ref_name }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}-backend:${{ github.ref_name }}
 
       - name: Build & Push BFF
         uses: docker/build-push-action@v5
         with:
           context: ./bff
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-bff:${{ github.ref_name }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}-bff:${{ github.ref_name }}
 
       - name: Build & Push Frontend
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:${{ github.ref_name }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}-frontend:${{ github.ref_name }}
 
   despliegue-staging:
     name: Despliegue a Staging
