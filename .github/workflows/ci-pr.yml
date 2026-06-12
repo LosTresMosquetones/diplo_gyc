@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   changes:
-    runs-on: local-lara
+    runs-on: self-hosted
     outputs:
       frontend: ${{ steps.filter.outputs.frontend }}
       bff: ${{ steps.filter.outputs.bff }}
