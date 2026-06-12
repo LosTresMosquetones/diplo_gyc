@@ -25,7 +25,7 @@ jobs:
           cache: "maven"
 
       - name: Compilar Backend con Maven
-        run: mvn clean compile -pl backend
+        run: mvn clean test -pl backend
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -44,10 +44,6 @@ jobs:
           npm ci
           npm run test # Cambialo por tu script exacto de coverage
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@master
         env:
