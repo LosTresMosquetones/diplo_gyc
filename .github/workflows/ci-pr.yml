@@ -33,7 +33,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    runs-on: local-lara
+    runs-on: self-hosted
     needs: changes
     if: github.event.action != 'closed' && needs.changes.outputs.frontend == 'true'
     steps:
@@ -52,7 +52,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    runs-on: local-lara
+    runs-on: self-hosted
     needs: changes
     if: github.event.action != 'closed' && needs.changes.outputs.bff == 'true'
     steps:
@@ -72,7 +72,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    runs-on: local-lara
+    runs-on: self-hosted
     needs: changes
     if: github.event.action != 'closed' && needs.changes.outputs.backend == 'true'
     steps:
