@@ -1,10 +1,7 @@
 name: CD Main - Flujo de Entrega y Despliegue
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - 10-staging-deploy-configuration
     tags:
       - 'v*.*.*'
 
