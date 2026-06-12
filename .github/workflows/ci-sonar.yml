@@ -52,3 +52,12 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Debug - listar archivos de coverage
+        run: |
+          echo "--- BFF ---"
+          find bff/coverage -type f 2>/dev/null || echo "no existe bff/coverage"
+          echo "--- FRONTEND ---"
+          find frontend/coverage -type f 2>/dev/null || echo "no existe frontend/coverage"
+          echo "--- BACKEND JACOCO ---"
+          find backend/target/site/jacoco -type f 2>/dev/null || echo "no existe jacoco"
