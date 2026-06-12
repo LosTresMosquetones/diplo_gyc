@@ -17,7 +17,14 @@ describe('dataHandlers utilities', () => {
 
     it('should return N/A for invalid price', () => {
       expect(formatPrice(null)).toBe('N/A');
+      expect(formatPrice(undefined)).toBe('N/A');
+      expect(formatPrice(NaN)).toBe('N/A');
       expect(formatPrice('10')).toBe('N/A');
+    });
+
+    it('should fallback to simple format on error (invalid currency)', () => {
+      // Invalid currency code like 'INVALID' should trigger the catch block
+      expect(formatPrice(10, 'INVALID')).toBe('10 INVALID');
     });
   });
 
@@ -29,6 +36,7 @@ describe('dataHandlers utilities', () => {
 
     it('should return empty string for non-string inputs', () => {
       expect(sanitizeString(null)).toBe('');
+      expect(sanitizeString(undefined)).toBe('');
       expect(sanitizeString(123)).toBe('');
     });
   });
@@ -43,6 +51,12 @@ describe('dataHandlers utilities', () => {
       expect(calculateDiscount(100, -5)).toBe(100);
       expect(calculateDiscount(100, 105)).toBe(100);
       expect(calculateDiscount(-10, 20)).toBe(0);
+      expect(calculateDiscount(0, 20)).toBe(0);
+    });
+
+    it('should handle non-number inputs', () => {
+      expect(calculateDiscount('100', 20)).toBe(0);
+      expect(calculateDiscount(100, '20')).toBe(100);
     });
   });
 
@@ -56,6 +70,7 @@ describe('dataHandlers utilities', () => {
     it('should return default color for unknown status', () => {
       expect(getStatusColor('unknown')).toBe('#6c757d');
       expect(getStatusColor(null)).toBe('#6c757d');
+      expect(getStatusColor(undefined)).toBe('#6c757d');
     });
   });
 
@@ -73,6 +88,19 @@ describe('dataHandlers utilities', () => {
     it('should return empty object for invalid input', () => {
       expect(arrayToMap(null)).toEqual({});
       expect(arrayToMap({})).toEqual({});
+      expect(arrayToMap([])).toEqual({});
+    });
+
+    it('should filter out invalid items', () => {
+      const arr = [
+        { id: '1', name: 'Item 1' },
+        null,
+        'not an object',
+        { name: 'Missing ID' },
+      ];
+      const result = arrayToMap(arr);
+      expect(result['1']).toEqual(arr[0]);
+      expect(Object.keys(result)).toHaveLength(1);
     });
   });
 
@@ -86,6 +114,7 @@ describe('dataHandlers utilities', () => {
 
     it('should handle invalid dates', () => {
       expect(formatDate(null)).toBe('Fecha inválida');
+      expect(formatDate(undefined)).toBe('Fecha inválida');
       expect(formatDate('not-a-date')).toBe('Fecha inválida');
     });
   });
