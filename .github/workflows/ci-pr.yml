@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   changes:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, lara]
     outputs:
       frontend: ${{ steps.filter.outputs.frontend }}
       bff: ${{ steps.filter.outputs.bff }}
@@ -33,7 +33,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, lara]
     needs: changes
     if: github.event.action != 'closed' && needs.changes.outputs.frontend == 'true'
     steps:
@@ -54,7 +54,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, lara]
     needs: changes
     if: github.event.action != 'closed' && needs.changes.outputs.bff == 'true'
     steps:
@@ -76,7 +76,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, lara]
     needs: changes
     if: github.event.action != 'closed' && needs.changes.outputs.backend == 'true'
     steps:
